@@ -14,8 +14,8 @@ library(cowplot)
 load('interimsteps/diet_categories_comparative.rdata')
 
 ## subsetting parameters    ----
-mammalsp <- c(1,2,5,6)
-nafodiet <- c('2H','2J','3K')
+mammalsp <- c(1)
+nafodiet <- c('3L','2J','3K')
 dietby <-  c('year', 'mmsp')
 
 
