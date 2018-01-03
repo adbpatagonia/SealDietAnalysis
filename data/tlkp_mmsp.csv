@@ -1,0 +1,30 @@
+mmspcode,mmsp,mmsp.scientific.name,mmsp.order
+W,Northern bottlenosed dolphin  ,Tursiops truncatus            ,Odontoceti                    
+U,Striped dolphin               ,Stenella coeruleoalba         ,Odontoceti                    
+C,Common or saddleback dolphin  ,Delphinus delphis             ,Odontoceti                    
+D,White beaked dolphin          ,Lagenorhynchus albirostris    ,Odontoceti                    
+E,Atlantic white sided dolphin  ,Lagenorhynchus acutus         ,Odontoceti                    
+T,Rissos dolphin                ,Grampus griseus               ,Odontoceti                    
+K,Killer whale                  ,Orcinus orca                  ,Odontoceti                    
+H,Harbour porpoise              ,Phocoena phocoena             ,Odontoceti                    
+J,Beluga                        ,Delphinapterus leucas         ,Odontoceti                    
+N,Narwhal                       ,Monodon monoceros             ,Odontoceti                    
+G,Sperm whale                   ,Physeter catodon              ,Odontoceti                    
+S,Pygmy sperm whale             ,Kogia breviceps               ,Odontoceti                    
+L,Northern bottlenose whale     ,Hyperoodon ampullatus         ,Odontoceti                    
+Q,Sowerbys beaked whale         ,Mesoplodon bidens             ,Odontoceti                    
+M,Minke whale                   ,Balaenoptera acutorostrata    ,Mysticeti                     
+I,Sei whale                     ,Balaenoptera borealis         ,Mysticeti                     
+F,Fin whale                     ,Balaenoptera physalus         ,Mysticeti                     
+B,Blue whale                    ,Balaenoptera musculus         ,Mysticeti                     
+A,Humpback whale                ,Megaptera novaeangliae        ,Mysticeti                     
+X,Bowhead whale                 ,Balaena mysticetus            ,Mysticeti                     
+R,Right whale                   ,Eubalaena glacialis           ,Mysticeti                     
+5,Ringed seal                   ,Phoca hispida                 ,Phocidae                      
+1,Harp seal                     ,Phoca groenlandica            ,Phocidae                      
+4,Harbour seal                  ,Phoca vitulina                ,Phocidae                      
+3,Grey seal                     ,Halichoerus grypus            ,Phocidae                      
+6,Bearded seal                  ,Erignathus barbatus           ,Phocidae                      
+2,Hooded seal                   ,Cystophora cristata           ,Phocidae                      
+V,Atlantic spotted dolphin      ,Stenella frontalis            ,Odontoceti                    
+P,Pilot or pothead whale        ,Globicephala melas            ,Odontoceti                    
