@@ -16,7 +16,7 @@ load('interimsteps/diet_categories_comparative.rdata')
 ## subsetting parameters    ----
 mammalsp <- c(1)
 nafodiet <- c('3L','2J','3K')
-dietby <-  c('year', 'mmsp')
+dietby <-  c('year', 'mmspcode', 'nafo', 'area', 'season')
 
 
 ## look only at data from main stomach and nafo Divs ----
@@ -41,7 +41,7 @@ percbio$mmsp <- ifelse(percbio$mmspcode == 1, 'Harp seal',
                               ifelse(percbio$mmspcode == 5, 'Ringed seal',
                                      ifelse(percbio$mmspcode == 6, 'Bearded seal','flag'))))
 percbio <- transform(percbio,
-                mmsp=factor(mmsp,levels=c(
+                mmsp = factor(mmsp,levels = c(
                   "Harp seal",
                   "Ringed seal",
                   "Hooded seal",
@@ -52,13 +52,13 @@ percbio <- transform(percbio,
 #detach(package:plyr)
 sampsize.nafo <- diet %>%
   filter(mmspcode %in% mammalsp) %>%
-  group_by(mmsp) %>%
+  group_by(mmsp, nafo, area, season) %>%
   summarize(n = length(unique(idsex)))
 
 ## plot diet composition ----
 ## define palette
-if(nrow(preycat) == 13) {mypalette <- c(brewer.pal(12,"Paired"),'black' )}
-if(nrow(preycat) < 13) {mypalette <- brewer.pal(nrow(preycat),"Paired")}
+if (nrow(preycat) == 13) { mypalette <- c(brewer.pal(12, "Paired"), 'black') }
+if (nrow(preycat) < 13) { mypalette <- brewer.pal(nrow(preycat), "Paired") }
 mypalette <- rev(mypalette)
 
 ## labels
@@ -75,49 +75,27 @@ wp <- wp + theme_bw() + theme(panel.grid.major = element_blank(),panel.grid.mino
 wp <- wp  + xlab("Year") + ylab("%Biomass")
 wp <- wp + scale_y_continuous(limits = c(0,1.09), labels = scales::percent, breaks = c(0,0.5,1))
 wp <- wp + geom_text(data = sampsize.nafo, aes(x = 1980, y = 1.07, label =  paste("n = ",n)),
-                      colour = "black", inherit.aes = FALSE, parse = FALSE,size = 5)
+                      colour = "black", inherit.aes = FALSE, parse = FALSE,size = 4)
 wp <- wp + scale_fill_manual(name = "", values = mypalette ,
                              breaks = as.factor(nrow(preycat):1),
-                             labels = preys,
-                             guide = guide_legend( nrow = 2, byrow = T))
+                             labels = preys)#,
+                             #guide = guide_legend( nrow = 2, byrow = T))
 wp <- wp + scale_color_manual(name = "", values = mypalette ,
                               breaks = as.factor(nrow(preycat):1),
-                              labels = preys,
-                              guide = guide_legend( nrow = 2, byrow = T))
-
-
+                              labels = preys)#,
+                              #guide = guide_legend( nrow = 2, byrow = T))
 wp <- wp + scale_x_continuous(breaks = seq(1980, 2009, 5),limits = c(1978, 2007))#,
-wp <- wp + facet_grid(mmsp~., drop = TRUE)
+wp <- wp + facet_wrap(nafo ~ area + season)
 wp <- wp + theme(legend.position = "bottom")
 wp <- wp + ggtitle("Diet composition")
-wp <- wp + theme(plot.title = element_text(size = 25, face = "bold"),
-                 strip.text = element_text(size = 18),
-                 legend.text=element_text(size = 12),
-                 axis.text=element_text(size = 12),
-                 axis.title=element_text(size = 15, face="bold"))
+wp <- wp + theme(plot.title = element_text(size = 15, face = "bold"),
+                 strip.text = element_text(size = 12),
+                 legend.text = element_text(size = 11),
+                 axis.text = element_text(size = 10),
+                 axis.title = element_text(size = 13, face = "bold"))
 wp
-save_plot("output/comparative_diet2.png", wp, base_width = 21, base_height = 10)#, dpi = 900) # make room for figure legend)
+save_plot("output/harp_diet.png", wp, base_width = 21, base_height = 10)#, dpi = 900) # make room for figure legend)
 
 
-## plot
-wpagg <- ggplot(percbio, aes(x = order, y = percbio,
-                          color = as.factor((order)), fill = as.factor((order)),width = 0.7))
-wpagg <- wpagg + geom_bar(stat = 'identity')
-wpagg <- wpagg + theme_bw()
-wpagg <- wpagg  + xlab("Prey") + ylab("%W")
-wpagg <- wpagg + scale_y_continuous(limits = c(0,1.09), labels = scales::percent, breaks = c(0,0.25,0.5,0.75,1))
-# wpagg <- wpagg + geom_text(data = sampsize.nafo, aes(x = 1980, y = 1.06, label =  paste("n = ",n)),
-#                      colour = "black", inherit.aes = FALSE, parse = FALSE,size = 3)
-wpagg <- wpagg + scale_fill_manual(name = "", values = mypalette ,
-                             breaks = as.factor(nrow(preycat):1),
-                             labels = preys)
-wpagg <- wpagg + scale_color_manual(name = "", values = mypalette ,
-                              breaks = as.factor(nrow(preycat):1),
-                              labels = preys)
-wpagg <- wpagg + facet_grid(mmsp~., drop = TRUE)
-wpagg
-
-
-
-save(percbio, file = 'interimsteps/diet.Rdata')
+save(percbio, file = 'interimsteps/harp_percbio.Rdata')
 #save(diet, mammalsp, nafodiet, file = 'interimsteps/diet_postanalysis.rdata')
