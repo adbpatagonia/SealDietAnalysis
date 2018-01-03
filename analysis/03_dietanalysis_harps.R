@@ -11,12 +11,15 @@ library(RColorBrewer)
 library(cowplot)
 
 ## read data  ----
-load('interimsteps/diet_categories_comparative.rdata')
+load('interimsteps/diet_categories.rdata')
 
 ## subsetting parameters    ----
 mammalsp <- c(1)
 nafodiet <- c('3L','2J','3K')
 dietby <-  c('year', 'mmspcode', 'nafo', 'area', 'season')
+
+## define season ----
+diet$season <- ifelse((diet$month > 3) & (diet$month < 10), 'S', 'W')
 
 
 ## look only at data from main stomach and nafo Divs ----
