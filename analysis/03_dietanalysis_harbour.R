@@ -1,5 +1,5 @@
 ## ADB July 28, 2017.
-## The intent of this script is to 
+## The intent of this script is to
 ## carry out comparative diet analyses of 4 seal sp
 
 
@@ -10,8 +10,6 @@ library(ggplot2)
 library(RColorBrewer)
 
 ## read data  ----
-#setwd('D:/Buren_files/GitHub/DietAnalysis/')
-setwd('/media/alejandro/adb_data/Buren_files/GitHub/DietAnalysis/')
 load('interimsteps/diet_categories_harbour.rdata')
 
 ## TEMPORAL ----
@@ -42,7 +40,7 @@ percbio <- percbio[order(percbio[,"mmspcode"],-percbio[,"percbio"]),]
 ## merge diet summary info with prey category info ----
 percbio <- merge(percbio, preycat, by = 'preycat', all.y = T)
 
-## reorder 
+## reorder
 percbio$mmsps <- ifelse(percbio$mmspcode == 1, 'Harp seal',
                        ifelse(percbio$mmspcode == 2, 'Hooded seal',
                               ifelse(percbio$mmspcode == 5, 'Ringed seal',
@@ -51,7 +49,7 @@ percbio$mmsps <- ifelse(percbio$mmspcode == 1, 'Harp seal',
                                                    ifelse(percbio$mmspcode == 3, 'Grey seal','flag'))))))
 #percbio <- transform(percbio,
                 # mmsp=factor(mmsp,levels=c(
-                #   "Harp seal", 
+                #   "Harp seal",
                 #   "Ringed seal",
                 #   "Hooded seal",
                 #   "Bearded seal")))
@@ -59,7 +57,7 @@ percbio$mmsps <- ifelse(percbio$mmspcode == 1, 'Harp seal',
 
 ## calculate sample size by Nafo Div and predator sp ----
 sn <- diet[which(diet$mmspcode %in% mammalsp),] %>% group_by(nafo, mmsp)
-sampsize.nafo <-  summarize(sn, length(unique(idsex))) 
+sampsize.nafo <-  summarize(sn, length(unique(idsex)))
 names(sampsize.nafo)[3] <- 'n'
 sampsize.nafo <- sampsize.nafo %>% group_by(nafo, mmsp)
 
@@ -85,8 +83,8 @@ preys <- preycat$preycat
 
 
 ## plot
-wp <- ggplot(percbio, aes(x = year, y = percbio, 
-                          color = as.factor((order)), fill = as.factor((order)),width = 0.7)) 
+wp <- ggplot(percbio, aes(x = year, y = percbio,
+                          color = as.factor((order)), fill = as.factor((order)),width = 0.7))
 wp <- wp + geom_bar(stat = 'identity')
 wp <- wp + theme_bw()
 wp <- wp  + xlab("Year") + ylab("%W")
@@ -101,11 +99,11 @@ wp <- wp + scale_color_manual(name = "", values = mypalette ,
                               labels = preys)
 #wp <- wp + facet_grid(nafo~mmsps, drop = TRUE)
 wp <- wp + facet_grid(.~mmsps, drop = TRUE)
-wp 
+wp
 
 
-wpagg <- ggplot(percbio, aes(x = order, y = percbio, 
-                          color = as.factor((order)), fill = as.factor((order)),width = 0.7)) 
+wpagg <- ggplot(percbio, aes(x = order, y = percbio,
+                          color = as.factor((order)), fill = as.factor((order)),width = 0.7))
 wpagg <- wpagg + geom_bar(stat = 'identity')
 wpagg <- wpagg + theme_bw()
 wpagg <- wpagg  + xlab("") + ylab("%W")
@@ -124,8 +122,8 @@ wpagg
 
 ## plot by year
 pby <- merge(percbio, sampsize.nafo[,c('year','n')], by = 'year')
-wpy <- ggplot(pby, aes(x = year, y = percbio, 
-                          color = as.factor((order)), fill = as.factor((order)),width = 0.7, label = n )) 
+wpy <- ggplot(pby, aes(x = year, y = percbio,
+                          color = as.factor((order)), fill = as.factor((order)),width = 0.7, label = n ))
 wpy <- wpy + geom_bar(stat = 'identity')
 wpy <- wpy + theme_bw()
 wpy <- wpy  + xlab("Year") + ylab("%W")
@@ -142,7 +140,7 @@ wpy <- wpy + scale_color_manual(name = "", values = mypalette ,
                               labels = preys)
 #wpy <- wpy + facet_grid(nafo~mmsps, drop = TRUE)
 wpy <- wpy + facet_grid(.~mmsps, drop = TRUE)
-wpy 
+wpy
 
 
 #save(diet, mammalsp, nafodiet, file = 'interimsteps/diet_postanalysis_harbour.rdata')

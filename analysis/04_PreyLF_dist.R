@@ -1,9 +1,8 @@
 ## ADB July 28, 2017.
-## The intent of this script is to 
+## The intent of this script is to
 ## compare the LF distributions of fish in harp and ringed seal diets
 
 ## read data  ----
-setwd('D:/Buren_files/GitHub/DietAnalysis/')
 load('interimsteps/diet_postanalysis.rdata')
 
 
@@ -15,13 +14,13 @@ library(cowplot)
 ## subset diet data by mm sp, prey sp, nafo, and eliminate erroneous length (> 4 mts long) ----
 preyplotdata <- subset(diet,mmspcode == 1 | mmspcode == 5)
 preyplotdata <- subset(preyplotdata,
-                       preycat == 'arctic cod' | 
-                         preycat == 'capelin' | 
-                         #                         preycat == 'Sandlances' |                                                   
-                         #                         preycat == 'redfish' |                                
-                         preycat == 'atlantic cod' | 
-                         preycat == 'atlantic herring'  
-                       #                         preycat == 'Pleuronectidae' |                          
+                       preycat == 'arctic cod' |
+                         preycat == 'capelin' |
+                         #                         preycat == 'Sandlances' |
+                         #                         preycat == 'redfish' |
+                         preycat == 'atlantic cod' |
+                         preycat == 'atlantic herring'
+                       #                         preycat == 'Pleuronectidae' |
                        #                         preycat == 'Other Fishes'
 )
 preyplotdata <- preyplotdata[which(preyplotdata$nafo %in% nafodiet), ]
@@ -50,7 +49,7 @@ preyplot <- preyplot + scale_fill_manual(values = colores, guide = FALSE) +
 preyplot <- preyplot + theme(legend.justification = c(1,1), legend.position = c(.98,0.4))
 preyplot <- preyplot + scale_y_continuous(limits = c(0,0.2), breaks = c(0,0.2), minor_breaks = c(0.1))
 preyplot <- preyplot + ggtitle("Prey length frequency distribution")
-preyplot <- preyplot + theme(plot.title = element_text(size = 16, face = "bold"), 
+preyplot <- preyplot + theme(plot.title = element_text(size = 16, face = "bold"),
                              strip.text = element_text(size = 14, face = "bold"),
                              legend.text=element_text(size = 13),
                              axis.text=element_text(size = 12),
@@ -67,7 +66,7 @@ sampsize.nafo <- ddply(diet[which(diet$mmspcode %in% mammalsp),],
                        summarize,
                        n = paste("n =", length(unique(idsex))))
 
-sampsize.nafo <- sampsize.nafo[which(sampsize.nafo$nafo %in% nafodiet),]  
+sampsize.nafo <- sampsize.nafo[which(sampsize.nafo$nafo %in% nafodiet),]
 
 
 sampsize.nafomonth <- ddply(diet[which(diet$mmspcode %in% mammalsp),],
@@ -76,7 +75,7 @@ sampsize.nafomonth <- ddply(diet[which(diet$mmspcode %in% mammalsp),],
                             n = length(unique(idsex)))
 
 
-sampsize.nafomonth <- sampsize.nafomonth[which(sampsize.nafomonth$nafo %in% nafodiet),] 
+sampsize.nafomonth <- sampsize.nafomonth[which(sampsize.nafomonth$nafo %in% nafodiet),]
 sampsize.nafomonth <- droplevels(sampsize.nafomonth)
 
 
@@ -89,12 +88,12 @@ sampsize.nafomonth$reln <- with(sampsize.nafomonth,n/totals)
 
 sampsize.nafomonth <- transform(sampsize.nafomonth,
                      mmsp = factor(mmsp,levels = c(
-                       "Harp seal", 
+                       "Harp seal",
                        "Ringed seal",
                        "Hooded seal",
                        "Bearded seal")))
 
-ssp <- ggplot(sampsize.nafomonth, aes(x = month,y = n,width = 0.7)) 
+ssp <- ggplot(sampsize.nafomonth, aes(x = month,y = n,width = 0.7))
 ssp <- ssp + scale_x_discrete("Month", limit = c(1:12))#, breaks = c(1:12), labels = c(1:12))
 #ssp <- ssp + scale_x_date(as.Date(month), xlim = c(1,12))
 ssp <- ssp + geom_bar(stat = 'identity')

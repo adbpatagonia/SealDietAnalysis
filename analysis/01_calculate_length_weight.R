@@ -1,14 +1,12 @@
 ## ADB July 25, 2017.
-## The intent of this script is to calculate the lengths and weights 
+## The intent of this script is to calculate the lengths and weights
 ## of all prey species of all marine mammals based on HPA
 ## This process takes more than a minute, and thus the output is saved
 ## It is later loaded in the scripts written to do the actual analyses
 
 ## Read data and source functions needed to estimate length and weight ----
-setwd('D:/Buren_files/GitHub/DietAnalysis/')
-#setwd('/media/alejandro/adb_data/Buren_files/GitHub/DietAnalysis/')
-source('code/functions/lengthregs.R');  source('code/functions/weightregs.R')
-diet <- read.csv('input/diet_data.csv',header = T)    
+source('R/functions/lengthregs.R');  source('R/functions/weightregs.R')
+diet <- read.csv('data/diet_data.csv',header = T)
 #diet <- diet[order(diet$pMVmm, diet$length),]
 
 ## create indices for easier handling ----
@@ -19,10 +17,10 @@ diet <- merge(diet,idindex)
 ## Estimate prey length and weight based on regressions from hard parts ----
 # Create place holders
 diet$predlength <- diet$predweight <- NA
-# estimate length and weight 
+# estimate length and weight
 s1 <- Sys.time()
 for (i in 1:nrow(diet)) {
-  diet$predlength[i] <- ifelse(is.na(diet$pMVmm[i]), NA, lengthregs(diet$preycode[i], as.character(diet$group[i]), diet$pMVmm[i]))  
+  diet$predlength[i] <- ifelse(is.na(diet$pMVmm[i]), NA, lengthregs(diet$preycode[i], as.character(diet$group[i]), diet$pMVmm[i]))
   diet$predweight[i] <- weightregs(preycode = diet$preycode[i], group = as.character(diet$group[i]), pMVmm = diet$pMVmm[i], preylength = diet$predlength[i])
 }
 s2 <- Sys.time()
@@ -35,7 +33,7 @@ s2 - s1
 diet$preyweight <- diet$predweight
 # for inverts, use measured weight
 diet$preyweight <- ifelse(diet$preycode > 999,diet$measuredweight,diet$preyweight)
-# for fish, use the weights that were measured 
+# for fish, use the weights that were measured
 diet$preyweight <- ifelse(diet$preycode < 1000 & diet$codemeasuredestimated > 4,diet$weight,diet$preyweight)
 
 ## For invertebrates, there can be a conflict between prey item weight and total prey sp weight ----
@@ -89,7 +87,7 @@ for (i in unique(nonconsolinverts$idsex)) {
       k <- k + nrow(dat3)
     }
   }
-}  
+}
 rm(list=setdiff(ls(), c('diet', 'newweigths')))
 
 # assign the calculated values in the diet data frame
