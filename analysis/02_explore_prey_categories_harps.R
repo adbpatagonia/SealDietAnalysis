@@ -58,9 +58,10 @@ cats <- c(
 #  "squid",
 #  "shrimp pandalus",
 #  "shrimp non-pandalid",
-  "shrimp",
+
 #  "crab",
   "mysid",
+   "shrimp",
   "hyperiid amphipod",
   "invertebrate"
 )
