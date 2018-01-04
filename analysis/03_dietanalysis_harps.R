@@ -93,7 +93,7 @@ wp <- wp + scale_color_manual(name = "", values = mypalette ,
                               breaks = as.factor(nrow(preycat):1),
                               labels = preys)#,
                               #guide = guide_legend( nrow = 2, byrow = T))
-wp <- wp + scale_x_continuous(breaks = seq(1985, 2015, 5),limits = c(1985, 2015))#,
+wp <- wp + scale_x_continuous(breaks = seq(1985, 2020, 5),limits = c(1985, 2016))#,
 wp <- wp + facet_wrap(nafo ~ area + season)
 wp <- wp + theme(legend.position = "bottom")
 wp <- wp + ggtitle("PG diet composition")
