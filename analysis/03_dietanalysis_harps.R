@@ -94,7 +94,7 @@ wp <- wp + scale_color_manual(name = "", values = mypalette ,
                               labels = preys)#,
                               #guide = guide_legend( nrow = 2, byrow = T))
 wp <- wp + scale_x_continuous(breaks = seq(1985, 2020, 5),limits = c(1985, 2016))#,
-wp <- wp + facet_wrap(nafo ~ area + season)
+wp <- wp + facet_grid(nafo ~ area + season, drop = TRUE)
 wp <- wp + theme(legend.position = "bottom")
 wp <- wp + ggtitle("PG diet composition")
 wp <- wp + theme(plot.title = element_text(size = 15, face = "bold"),
@@ -109,4 +109,4 @@ save_plot("output/harp_diet.png", wp, base_width = 21, base_height = 10)#, dpi =
 
 
 save(percbio, file = 'interimsteps/harp_percbio.Rdata')
-#save(diet, mammalsp, nafodiet, file = 'interimsteps/diet_postanalysis.rdata')
+save(diet, mammalsp, nafodiet, file = 'interimsteps/diet_postanalysis_harp.rdata')
