@@ -11,7 +11,10 @@ library(RColorBrewer)
 library(cowplot)
 
 ## read data  ----
-load('interimsteps/diet_categories.rdata')
+# diet
+load('interimsteps/diet_categories_harp.rdata')
+# morph
+
 
 ## subsetting parameters    ----
 mammalsp <- c(1)
@@ -26,8 +29,11 @@ diet$season <- ifelse((diet$month > 3) & (diet$month < 10), 'S', 'W')
 diet <- diet[which(diet$digestivetractsection == 'Main Stomach'),]
 diet <- diet[which(diet$nafo %in% nafodiet),]
 
+## remove data pre 1985 -----
+diet <- filter(diet, year > 1984)
+
 ## define percentage weight by prey and selected predator species    ----
-prepercbio <- na.omit(diet[which(diet$mmspcode %in% mammalsp),c('mmsp', 'mmspcode', 'year', 'month', 'nafo', 'area', 'group', 'season', 'preycat','totalpreyweight')])
+prepercbio <- na.omit(diet[which(diet$mmspcode %in% mammalsp),c('idsex', 'mmsp', 'mmspcode', 'year', 'month', 'nafo', 'area', 'group', 'season', 'preycat','totalpreyweight')])
 numpercbio <- summaryBy( as.formula(paste("totalpreyweight~",paste(c(dietby,'preycat'),collapse = "+"))),data = prepercbio,FUN = sum)
 denpercbio <- summaryBy( as.formula(paste("totalpreyweight~",paste(dietby,collapse = "+"))),data = prepercbio,FUN = sum)
 names(denpercbio) <- c(dietby, 'totalweight')
@@ -53,7 +59,7 @@ percbio <- transform(percbio,
 
 ## calculate sample size by Nafo Div and predator sp ----
 #detach(package:plyr)
-sampsize.nafo <- diet %>%
+sampsize.nafo <- prepercbio %>%
   filter(mmspcode %in% mammalsp) %>%
   group_by(mmsp, nafo, area, season) %>%
   summarize(n = length(unique(idsex)))
@@ -71,13 +77,13 @@ preys <- preycat$preycat
 
 
 ## plot
-wp <- ggplot(percbio, aes(x = year, y = percbio,
+wp <- ggplot((percbio), aes(x = year, y = percbio,
                           color = as.factor((order)), fill = as.factor((order)),width = 0.7))
 wp <- wp + geom_bar(stat = 'identity')
 wp <- wp + theme_bw() + theme(panel.grid.major = element_blank(),panel.grid.minor = element_blank())
 wp <- wp  + xlab("Year") + ylab("%Biomass")
 wp <- wp + scale_y_continuous(limits = c(0,1.09), labels = scales::percent, breaks = c(0,0.5,1))
-wp <- wp + geom_text(data = sampsize.nafo, aes(x = 1980, y = 1.07, label =  paste("n = ",n)),
+wp <- wp + geom_text(data = sampsize.nafo, aes(x = 1986, y = 1.07, label =  paste("n = ",n)),
                       colour = "black", inherit.aes = FALSE, parse = FALSE,size = 4)
 wp <- wp + scale_fill_manual(name = "", values = mypalette ,
                              breaks = as.factor(nrow(preycat):1),
@@ -87,16 +93,18 @@ wp <- wp + scale_color_manual(name = "", values = mypalette ,
                               breaks = as.factor(nrow(preycat):1),
                               labels = preys)#,
                               #guide = guide_legend( nrow = 2, byrow = T))
-wp <- wp + scale_x_continuous(breaks = seq(1980, 2009, 5),limits = c(1978, 2007))#,
+wp <- wp + scale_x_continuous(breaks = seq(1985, 2015, 5),limits = c(1985, 2015))#,
 wp <- wp + facet_wrap(nafo ~ area + season)
 wp <- wp + theme(legend.position = "bottom")
-wp <- wp + ggtitle("Diet composition")
+wp <- wp + ggtitle("PG diet composition")
 wp <- wp + theme(plot.title = element_text(size = 15, face = "bold"),
                  strip.text = element_text(size = 12),
                  legend.text = element_text(size = 11),
                  axis.text = element_text(size = 10),
                  axis.title = element_text(size = 13, face = "bold"))
 wp
+
+
 save_plot("output/harp_diet.png", wp, base_width = 21, base_height = 10)#, dpi = 900) # make room for figure legend)
 
 
