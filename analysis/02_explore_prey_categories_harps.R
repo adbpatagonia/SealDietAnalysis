@@ -24,9 +24,9 @@ preysp[grepl("Pandalus", preysp$prey.scientific.name),'preycat'] <- 'shrimp pand
 preysp[grepl("Shrimp", preysp$prey) & !grepl("Pandalus", preysp$prey.scientific.name), 'preycat'] <- 'shrimp non-pandalid'
 preysp[grepl("shrimp", preysp$preycat),'preycat'] <- 'shrimp'
 preysp$preycat <- ifelse(is.na(preysp$preycat) & between(preysp$preycode, 1100, 9000) , 'invertebrate', preysp$preycat)
-preysp$preycat <- ifelse(between(preysp$preycode, 7925, 7989) | preysp$preycode == 7951, 'mysid', preysp$preycat)
-#preysp$preycat <- ifelse(between(preysp$preycode, 7991, 8017) , 'euphasiid', preysp$preycat)
-preysp[grepl("Hyperiid", preysp$prey), 'preycat'] <- 'hyperiid amphipod'
+#preysp$preycat <- ifelse(between(preysp$preycode, 7925, 7989) | preysp$preycode == 7951, 'mysid', preysp$preycat)
+preysp$preycat <- ifelse(between(preysp$preycode, 7991, 8017) , 'euphasiid', preysp$preycat)
+#preysp[grepl("Hyperiid", preysp$prey), 'preycat'] <- 'hyperiid amphipod'
 #preysp$preycat <- ifelse(between(preysp$preycode, 7023, 7739) , 'gammarid amphipod', preysp$preycat)
 preysp[grepl("Crab", preysp$prey), 'preycat'] <- 'invertebrate'
 #preysp[grepl("Gad", preysp$prey) | grepl("Cod", preysp$prey) & preysp$preycode != 451 & preysp$preycode != 438, 'preycat'] <- 'gadoid'
@@ -41,7 +41,7 @@ preysp[which(preysp$preycode == 438),'preycat'] <- 'atlantic cod'
 preysp$preycat <- ifelse(between(preysp$preycode, 149, 150) , 'atlantic herring', preysp$preycat)
 #preysp$preycat <- ifelse(between(preysp$preycode, 17, 122) , 'chondrichthyes', preysp$preycat)
 preysp[grepl("Ammodyt", preysp$prey.scientific.name), 'preycat'] <- 'sandlance'
-#preysp[grepl("Sebast", preysp$prey.scientific.name), 'preycat'] <- 'redfish'
+preysp[grepl("Sebast", preysp$prey.scientific.name), 'preycat'] <- 'redfish'
 #preysp$preycat <- ifelse(between(preysp$preycode, 808, 832) , 'sculpin', preysp$preycat)
 preysp$preycat <- ifelse(between(preysp$preycode, 882, 909) &  preysp$preycode != 892, 'flatfish', preysp$preycat)
 
@@ -53,6 +53,7 @@ cats <- c(
   "capelin",
   "sandlance",
   "flatfish",
+  "redfish",
   "gadoid",
   "fish",
 #  "squid",
@@ -60,9 +61,9 @@ cats <- c(
 #  "shrimp non-pandalid",
 
 #  "crab",
-  "mysid",
+#  "mysid",
    "shrimp",
-  "hyperiid amphipod",
+  "euphasiid",
   "invertebrate"
 )
 preycat <- preycat %>%

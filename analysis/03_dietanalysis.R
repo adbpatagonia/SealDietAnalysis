@@ -14,9 +14,9 @@ library(cowplot)
 load('interimsteps/diet_categories_comparative.rdata')
 
 ## subsetting parameters    ----
-mammalsp <- c(1,2,5,6)
-nafodiet <- c('2H','2J','3K')
-dietby <-  c('year', 'mmsp')
+mammalsp <- c(2)
+nafodiet <- c('2H','2J','2G')
+dietby <-  c('mmsp')
 
 
 ## look only at data from main stomach and nafo Divs ----
@@ -57,8 +57,8 @@ sampsize.nafo <- diet %>%
 
 ## plot diet composition ----
 ## define palette
-if(nrow(preycat) == 13) {mypalette <- c(brewer.pal(12,"Paired"),'black' )}
-if(nrow(preycat) < 13) {mypalette <- brewer.pal(nrow(preycat),"Paired")}
+if(nrow(preycat) == 13) {mypalette <- c(brewer.pal(12,"Paired"), 'black' )}
+if(nrow(preycat) < 13) {mypalette <- brewer.pal(nrow(preycat), "Paired")}
 mypalette <- rev(mypalette)
 
 ## labels
@@ -96,7 +96,7 @@ wp <- wp + theme(plot.title = element_text(size = 25, face = "bold"),
                  axis.text=element_text(size = 12),
                  axis.title=element_text(size = 15, face="bold"))
 wp
-save_plot("output/comparative_diet2.png", wp, base_width = 21, base_height = 10)#, dpi = 900) # make room for figure legend)
+#save_plot("output/comparative_diet2.png", wp, base_width = 21, base_height = 10)#, dpi = 900) # make room for figure legend)
 
 
 ## plot
@@ -119,5 +119,5 @@ wpagg
 
 
 
-save(percbio, file = 'interimsteps/diet.Rdata')
+#save(percbio, file = 'interimsteps/diet.Rdata')
 #save(diet, mammalsp, nafodiet, file = 'interimsteps/diet_postanalysis.rdata')

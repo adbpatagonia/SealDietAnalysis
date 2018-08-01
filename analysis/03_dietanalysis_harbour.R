@@ -21,7 +21,7 @@ diet$season <- rep('N', nrow(diet))
 mammalsp <- c(4)
 nafodiet <- c('2H','2J','3K','3L','3Pn','3Ps','4R')
 #dietby <-  c('mmspcode','nafo')
-dietby <-  c('mmspcode','year')
+dietby <-  c('mmspcode')
 
 
 ## look only at data from main stomach and nafo Divs ----
@@ -79,7 +79,19 @@ mypalette <- rev(mypalette)
 ## labels
 preys <- preycat$preycat
 
-
+#
+# ## plot
+# wp <- ggplot(percbio, aes(x = order, y = percbio,
+#                           color = as.factor((order)), fill = as.factor((order)),width = 0.7))
+# wp <- wp + geom_bar(stat = 'identity')
+# wp <- wp + theme_bw()
+# wp <- wp  + xlab("prey") + ylab("%W")
+# wp <- wp + scale_fill_manual(name = "", values = mypalette ,
+#                              breaks = as.factor(nrow(preycat):1),
+#                              labels = preys)
+# wp <- wp + scale_color_manual(name = "", values = mypalette ,
+#                               breaks = as.factor(nrow(preycat):1),
+#                               labels = preys)
 
 
 ## plot
@@ -142,5 +154,8 @@ wpy <- wpy + scale_color_manual(name = "", values = mypalette ,
 wpy <- wpy + facet_grid(.~mmsps, drop = TRUE)
 wpy
 
+
+ cowplot::ggsave(filename = "D:/Buren_files/DFO/MM/Projects/CoArc/EwE/DietForJamie/output/harbour.diet_aggregated.png", plot = wp, height = 10, width = 10)
+ write.csv(percbio, 'D:/Buren_files/DFO/MM/Projects/CoArc/EwE/DietForJamie/output/harbour_aggregated_diet_for_Ecopath.csv', row.names = F)
 
 #save(diet, mammalsp, nafodiet, file = 'interimsteps/diet_postanalysis_harbour.rdata')

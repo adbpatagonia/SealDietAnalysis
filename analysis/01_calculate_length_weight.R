@@ -7,7 +7,17 @@
 ## Read data and source functions needed to estimate length and weight ----
 source('R/functions/lengthregs.R');  source('R/functions/weightregs.R')
 diet <- read.csv('data/diet_data.csv',header = T)
+
+## exclude seals based on  e.g. if they were caught as bycaught
+include <- read.csv('data/qsel_dietanalysis.csv', header = T)
+diet <- merge(diet, include, by = 'idsex')
+diet <- subset(diet, codedietanalysis == 1)
+
+#diet$weight <- as.numeric(diet$weight)
 #diet <- diet[order(diet$pMVmm, diet$length),]
+
+## remove column
+#diet <- diet[, -1]
 
 ## create indices for easier handling ----
 diet$rowindex <- 1:nrow(diet)
@@ -94,7 +104,9 @@ rm(list=setdiff(ls(), c('diet', 'newweigths')))
 diet$preyweight[newweigths$rowindex] <- newweigths$preyweight
 
 ## multiply individual prey weights times number of prey units ----
-diet$totalpreyweight <-  ifelse(!is.na(diet$preyunits),diet$preyunits * diet$preyweight,diet$preyweight)
+diet$totalpreyweight <-  ifelse(diet$preycode < 1000,
+                                ifelse(!is.na(diet$preyunits),diet$preyunits * diet$preyweight,diet$preyweight),
+                                diet$preyweight)
 
 ## drop unused levels
 diet <- droplevels(diet)

@@ -19,7 +19,7 @@ load('interimsteps/diet_categories_harp.rdata')
 ## subsetting parameters    ----
 mammalsp <- c(1)
 nafodiet <- c('3L','2J','3K')
-dietby <-  c('year', 'mmspcode', 'nafo', 'area', 'season')
+dietby <-  c('year', 'mmspcode', 'nafo', 'season', 'area')
 
 ## define season ----
 diet$season <- ifelse((diet$month > 3) & (diet$month < 10), 'S', 'W')
@@ -108,5 +108,5 @@ wp
 #save_plot("output/harp_diet.png", wp, base_width = 21, base_height = 10)#, dpi = 900) # make room for figure legend)
 
 # percbionoseason <- droplevels(subset(percbio, area == 'Inshore' | area =='Offshore'))
- save(percbio, file = 'interimsteps/harp_percbio.Rdata')
+ #save(percbio, file = 'interimsteps/harp_percbio.Rdata')
 #save(diet, mammalsp, nafodiet, file = 'interimsteps/diet_postanalysis_harp.rdata')
