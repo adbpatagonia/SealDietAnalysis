@@ -4,9 +4,12 @@
 ## This process takes more than a minute, and thus the output is saved
 ## It is later loaded in the scripts written to do the actual analyses
 
+## input data:
+### file data/qsel_Diet_Data.csv comes from mm_db_queries.accdb, query: qsel_Diet_Data
+
 ## Read data and source functions needed to estimate length and weight ----
 source('R/functions/lengthregs.R');  source('R/functions/weightregs.R')
-diet <- read.csv('data/diet_data.csv',header = T)
+diet <- read.csv('data/qsel_Diet_Data.csv',header = T)
 
 ## exclude seals based on  e.g. if they were caught as bycaught
 include <- read.csv('data/qsel_dietanalysis.csv', header = T)
