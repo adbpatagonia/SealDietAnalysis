@@ -12,9 +12,10 @@ source('R/functions/lengthregs.R');  source('R/functions/weightregs.R')
 diet <- read.csv('data/qsel_Diet_Data.csv',header = T)
 
 ## exclude seals based on  e.g. if they were caught as bycaught
-include <- read.csv('data/qsel_dietanalysis.csv', header = T)
-diet <- merge(diet, include, by = 'idsex')
-diet <- subset(diet, codedietanalysis == 1)
+# include <- read.csv('data/qsel_dietanalysis.csv', header = T)
+# diet2 <- merge(diet, include, by = 'idsex', all.x = TRUE)
+diet <- subset(diet, iddietanalysis == 1 | is.na(iddietanalysis))
+
 
 #diet$weight <- as.numeric(diet$weight)
 #diet <- diet[order(diet$pMVmm, diet$length),]
@@ -113,6 +114,8 @@ diet$totalpreyweight <-  ifelse(diet$preycode < 1000,
 
 ## drop unused levels
 diet <- droplevels(diet)
+
+
 
 ## save output ----
 save(diet, file = 'interimsteps/diet.rdata')

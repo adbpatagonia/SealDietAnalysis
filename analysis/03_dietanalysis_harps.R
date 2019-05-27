@@ -11,9 +11,14 @@ library(RColorBrewer)
 library(cowplot)
 
 ## read data  ----
-# diet
+# * diet ---
 load('interimsteps/diet_categories_harp.rdata')
-# morph
+
+## drop seals with lots of cod ----
+# diet <- diet %>%
+#   filter(preyunits < 31)
+diet <- diet %>%
+  filter(subunitarea != 340)
 
 
 ## subsetting parameters    ----
@@ -105,8 +110,8 @@ wp <- wp + theme(plot.title = element_text(size = 15, face = "bold"),
 wp
 
 
-save_plot("output/harp_diet.png", wp, base_width = 21, base_height = 10)#, dpi = 900) # make room for figure legend)
+save_plot("output/harp_diet_not340.png", wp, base_width = 21, base_height = 10)#, dpi = 900) # make room for figure legend)
 
 # percbionoseason <- droplevels(subset(percbio, area == 'Inshore' | area =='Offshore'))
- save(percbio, file = 'interimsteps/harp_percbio.Rdata')
-save(diet, mammalsp, nafodiet, file = 'interimsteps/diet_postanalysis_harp.rdata')
+# save(percbio, file = 'interimsteps/harp_percbio.Rdata')
+#save(diet, mammalsp, nafodiet, file = 'interimsteps/diet_postanalysis_harp.rdata')
