@@ -31,7 +31,7 @@ erosion <- erosion %>%
 collectors <- collectors %>%
   rename(codecollector = Code.Collector,
          collector = Collector.s.Name) #%>%
-  # mutate (collector2 = ifelse(grepl(pattern = 'Fudge', x = collector), 'Fudge', collector))
+# mutate (collector2 = ifelse(grepl(pattern = 'Fudge', x = collector), 'Fudge', collector))
 
 #collector$idsex <- as.factor(collector$idsex)
 
@@ -75,7 +75,7 @@ percbio$percbio <- with(percbio, (totalpreyweight.sum/totalweight))
 percbio <- percbio[order(percbio[,"mmspcode"],-percbio[,"percbio"]),]
 
 ## merge diet summary info with prey category info ----
-percbio <- merge(percbio, preycat, by = 'preycat')
+percbio <- merge(percbio, preycat, by = 'preycat', all.y = TRUE)
 
 ## reorder
 percbio$mmsp <- ifelse(percbio$mmspcode == 1, 'Harp seal',
@@ -83,11 +83,11 @@ percbio$mmsp <- ifelse(percbio$mmspcode == 1, 'Harp seal',
                               ifelse(percbio$mmspcode == 5, 'Ringed seal',
                                      ifelse(percbio$mmspcode == 6, 'Bearded seal','flag'))))
 percbio <- transform(percbio,
-                mmsp = factor(mmsp,levels = c(
-                  "Harp seal",
-                  "Ringed seal",
-                  "Hooded seal",
-                  "Bearded seal")))
+                     mmsp = factor(mmsp,levels = c(
+                       "Harp seal",
+                       "Ringed seal",
+                       "Hooded seal",
+                       "Bearded seal")))
 
 percbio <- droplevels(percbio)
 ## calculate sample size by Nafo Div and predator sp ----
@@ -106,28 +106,38 @@ mypalette <- rev(mypalette)
 ## labels
 preys <- preycat$preycat
 
-
+percbio[which(is.na(percbio$collector)),'collector'] <- 'Danny Dicks'
+percbio[which(is.na(percbio$area)),'area'] <- 'Inshore'
+percbio[which(is.na(percbio$nafo)),'nafo'] <- '3K'
+percbio[which(is.na(percbio$season)),'season'] <- 'S'
 
 
 ## plot
-wp <- ggplot(percbio, aes(x = year, y = percbio,
-                          color = as.factor((order)), fill = as.factor((order)),width = 0.7))
-wp <- wp + geom_bar(stat = 'identity')
+wp <- ggplot(percbio, aes(x = year,
+                          y = percbio,
+                          color = as.factor(order),
+                          fill = as.factor(order),
+                          width = 0.7,
+                          drop = FALSE))
+wp <- wp + geom_bar(stat = 'identity',
+                    drop = FALSE)
 wp <- wp + theme_bw() + theme(panel.grid.major = element_blank(),panel.grid.minor = element_blank())
 wp <- wp  + xlab("Year") + ylab("%Biomass")
 wp <- wp + scale_y_continuous(limits = c(0,1.09), labels = scales::percent, breaks = c(0,0.5,1))
-wp <- wp + geom_text(data = sampsize.nafo, aes(x = 1986, y = 1.07, label =  paste("n = ",n)),
-                      colour = "black", inherit.aes = FALSE, parse = FALSE,size = 4)
+wp <- wp + geom_text(data = sampsize.nafo, aes(x = 1992, y = 1.07, label =  paste("n = ",n)),
+                     colour = "black", inherit.aes = FALSE, parse = FALSE,size = 4)
 wp <- wp + scale_fill_manual(name = "", values = mypalette ,
                              breaks = as.factor(nrow(preycat):1),
-                             labels = preys)#,
-                             #guide = guide_legend( nrow = 2, byrow = T))
+                             labels = preys,
+                             drop = FALSE)#,
+#guide = guide_legend( nrow = 2, byrow = T))
 wp <- wp + scale_color_manual(name = "", values = mypalette ,
                               breaks = as.factor(nrow(preycat):1),
-                              labels = preys)#,
-                              #guide = guide_legend( nrow = 2, byrow = T))
+                              labels = preys,
+                              drop = FALSE)#,
+#guide = guide_legend( nrow = 2, byrow = T))
 # wp <- wp + scale_x_continuous(breaks = seq(1985, 2020, 5),limits = c(1985, 2016))#,
- wp <- wp + facet_grid(nafo ~ area + season + collector, drop = TRUE)
+wp <- wp + facet_grid(nafo + area ~  season + collector, drop = TRUE)
 # wp <- wp + facet_grid(. ~ collector, drop = TRUE)
 wp <- wp + theme(legend.position = "bottom")
 wp <- wp + ggtitle("PG diet composition")
